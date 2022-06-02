@@ -1,0 +1,21 @@
+name: PR Title Check
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  pr-title-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: morrisoncole/pr-lint-action@v1.6.1
+        with:
+          title-regex: "JIRA-[0-9]+"
+          on-failed-regex-fail-action: false
+          on-failed-regex-request-changes: true
+          on-failed-regex-create-review: true
+          on-failed-regex-comment:
+            "PR title does not contain a JIRA ticket id"
+          on-succeeded-regex-dismiss-review-comment:
+            "PR title looks good now!"
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
